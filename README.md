@@ -1,4 +1,4 @@
-# Banco-de-dados
+# Banco de Dados
 Repositório com os documentos da disciplina banco de dados do curso de Sistemas de Informação da UFPE.
 
 ### 1º Entrega: Projeto Conceitual
