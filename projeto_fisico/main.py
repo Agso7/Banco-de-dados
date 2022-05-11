@@ -7,7 +7,7 @@ conn = sqlite3.connect("escola.db")
 cursor = conn.cursor()
 
 #Criando as tabelas...
-cursor.execute("""
+cursor.executescript("""
 CREATE TABLE Turma (
         Codigo VARCHAR(20) NOT NULL PRIMARY KEY,
         Turno VARCHAR(20) NOT NULL,
@@ -65,13 +65,13 @@ CREATE TABLE Ministra (
 		FOREIGN KEY (Nome_Disciplina) REFERENCES Disciplina(nome_disciplina)
 );
 
-CREATE TABLE Pertence (
+CREATE TABLE Aluno_Turma (
         CPF VARCHAR(20) NOT NULL PRIMARY KEY,
         Codigo VARCHAR(20) NOT NULL,
   		FOREIGN KEY (codigo) REFERENCES Turma(codigo)
 );
 
-CREATE TABLE Possui (
+CREATE TABLE Turma_Disciplina_Aula (
         Codigo VARCHAR(20) NOT NULL,
         Nome_Disciplina VARCHAR(20) NOT NULL,
         Horario VARCHAR(20) NOT NULL,
@@ -107,43 +107,48 @@ for line in arquivo:
     turno = linha[1]
     serie = linha[2]
     cont += 1
-    cursor.execute("INSERT INTO Turma(Codigo,Turno,Serie) VALUES(cod,turno,serie)")
+    cursor.execute("INSERT INTO Turma(Codigo,Turno,Serie) VALUES(?,?,?)",(cod,turno,serie))
+    conn.commit()
 
 #Inserindo dados na tabela Disciplina
 cont = 0
 
 for line in arquivo:
-    if cont == 25:
+    if cont == 12:
         break
-    elif cont < 14:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
     nome_disciplina = linha[0]
     cont += 1
-    cursor.execute("INSERT INTO Disciplina(Nome_Disciplina) VALUES(nome_disciplina)")
+    cursor.execute("INSERT INTO Disciplina(Nome_Disciplina) VALUES(?)",(nome_disciplina,))
+    conn.commit()
+print("Dados inseridos na tabela Disciplina")
 
 #Inserindo dados na tabela Sala
 cont = 0
 
 for line in arquivo:
-    if cont == 36:
+    if cont == 10:
         break
-    elif cont < 27:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
     num_sala = linha[0]
     cont += 1
-    cursor.execute("INSERT INTO Sala(Num_Sala) VALUES(num_sala)")
+    cursor.execute("INSERT INTO Sala(Num_Sala) VALUES(?)",(num_sala,))
+    conn.commit()
+print("Dados inseridos na tabela Sala")
 
 #Inserindo dados na tabela Aula
 cont = 0
 
 for line in arquivo:
-    if cont == 47:
+    if cont == 10:
         break
-    elif cont < 38:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
@@ -152,15 +157,17 @@ for line in arquivo:
     horario = linha[2]
     dia = linha[3]
     cont += 1
-    cursor.execute("INSERT INTO Aula(Num_Sala,Data,Horario,Dia) VALUES(num_sala,data,horario,dia)")
+    cursor.execute("INSERT INTO Aula(Num_Sala,Data,Horario,Dia) VALUES(?,?,?,?)",(num_sala,data,horario,dia))
+    conn.commit()
+print("Dados inseridos na tabela Aula")
 
 #Inserindo dados na tabela Aluno
 cont = 0
 
 for line in arquivo:
-    if cont == 94:
+    if cont == 46:
         break
-    elif cont < 49:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
@@ -176,15 +183,17 @@ for line in arquivo:
     end_bairro = linha[9]
     end_logradouro = linha[10]
     cont += 1
-    cursor.execute("INSERT INTO Aluno(CPF,Matricula,Nota,Situacao,Nome,Data_Nasc,Sexo,Email,End_CEP,End_Bairro,End_Logradouro) VALUES(cpf,matricula,nota,situacao,nome,data_nasc,sexo,email,end_cep,end_bairro,end_logradouro)")
+    cursor.execute("INSERT INTO Aluno(CPF,Matricula,Nota,Situacao,Nome,Data_Nasc,Sexo,Email,End_CEP,End_Bairro,End_Logradouro) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(cpf,matricula,nota,situacao,nome,data_nasc,sexo,email,end_cep,end_bairro,end_logradouro))
+    conn.commit()
+print("Dados inseridos na tabela Aluno")
 
 #Inserindo dados na tabela Professor
 cont = 0
 
 for line in arquivo:
-    if cont == 107:
+    if cont == 12:
         break
-    elif cont < 96:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
@@ -200,45 +209,51 @@ for line in arquivo:
     end_bairro = linha[9]
     end_logradouro = linha[10]
     cont += 1
-    cursor.execute("INSERT INTO Professor(CPF,Salario,ID_Prof,Especialidade,Nome,Data_Nasc,Sexo,Email,End_CEP,End_Bairro,End_Logradouro) VALUES(cpf,salario,id_prof,especialidade,nome,data_nasc,sexo,email,end_cep,end_bairro,end_logradouro)")
+    cursor.execute("INSERT INTO Professor(CPF,Salario,ID_Prof,Especialidade,Nome,Data_Nasc,Sexo,Email,End_CEP,End_Bairro,End_Logradouro) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(cpf,salario,id_prof,especialidade,nome,data_nasc,sexo,email,end_cep,end_bairro,end_logradouro))
+    conn.commit()
+print("Dados inseridos na tabela Professor")
 
 #Inserindo dados na tabela Ministra
 cont = 0
 
 for line in arquivo:
-    if cont == 120:
+    if cont == 12:
         break
-    elif cont < 109:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
     cpf = linha[0]
     nome_disciplina = linha[1]
     cont += 1
-    cursor.execute("INSERT INTO Ministra(CPF,Nome_Disciplina) VALUES(cpf,nome_disciplina)")
+    cursor.execute("INSERT INTO Ministra(CPF,Nome_Disciplina) VALUES(?,?)",(cpf,nome_disciplina))
+    conn.commit()
+print("Dados inseridos na tabela Ministra")
 
-#Inserindo dados na tabela Pertence
+#Inserindo dados na tabela Aluno_Turma
 cont = 0
 
 for line in arquivo:
-    if cont == 167:
+    if cont == 46:
         break
-    elif cont < 122:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
     cpf = linha[0]
     cod = linha[1]
     cont += 1
-    cursor.execute("INSERT INTO Pertence(CPF,Codigo) VALUES(cpf,cod)")
+    cursor.execute("INSERT INTO Aluno_Turma(CPF,Codigo) VALUES(?,?)",(cpf,cod))
+    conn.commit()
+print("Dados inseridos na tabela Aluno_Turma")
 
-#Inserindo dados na tabela Possui
+#Inserindo dados na tabela Turma_Disciplina_Aula
 cont = 0
 
 for line in arquivo:
-    if cont == 180:
+    if cont == 12:
         break
-    elif cont < 169:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
@@ -247,22 +262,26 @@ for line in arquivo:
     horario = linha[2]
     data = linha[3]
     cont += 1
-    cursor.execute("INSERT INTO Possui(Codigo,Nome_Disciplina,Horario,Data) VALUES(cod,nome_disciplina,horario,data)")
+    cursor.execute("INSERT INTO Turma_Disciplina_Aula(Codigo,Nome_Disciplina,Horario,Data) VALUES(?,?,?,?)",(cod,nome_disciplina,horario,data))
+    conn.commit()
+print("Dados inseridos na tabela Turma_Disciplina_Aula")
 
 #Inserindo dados na tabela Coordena
 cont = 0
 
 for line in arquivo:
-    if cont == 193:
+    if cont == 12:
         break
-    elif cont < 182:
+    elif cont < 1:
         cont += 1
         continue
     linha = line.split(";")
     coordena = linha[0]
     coordenado = linha[1]
     cont += 1
-    cursor.execute("INSERT INTO Coordena(Coordenador,Coordenado_Por) VALUES(coordena,coordenado)")
+    cursor.execute("INSERT INTO Coordena(Coordenador,Coordenado_Por) VALUES(?,?)",(coordena,coordenado))
+    conn.commit()
+print("Dados inseridos na tabela Coordena")
 
 #Desconectando...
 conn.close()
